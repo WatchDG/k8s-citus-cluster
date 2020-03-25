@@ -15,7 +15,7 @@ spec:
         app: master
     spec:
       containers:
-      - name: citus
+      - name: master
         image: watchdg/citus:9
         imagePullPolicy: Always
         args: ['--config_file=/var/lib/postgresql/data/postgresql.conf']
