@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: init
+  namespace: archive
+data:
+  001-create-citus-extension.sql: |
+    BEGIN;
+    CREATE EXTENSION citus;
+    UPDATE pg_dist_node_metadata SET metadata=jsonb_insert(metadata, '{docker}', 'true');
+    COMMIT;
+  002-create-cstore-extension.sql: |
+    BEGIN;
+    CREATE EXTENSION cstore_fdw;
+    COMMIT;
+  003-create-partman-extension.sql: |
+    BEGIN;
+    CREATE SCHEMA partman;
+    CREATE EXTENSION pg_partman SCHEMA partman;
+    COMMIT;

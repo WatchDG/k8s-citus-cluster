@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: worker
+  namespace: archive
+data:
+  pg_hba.conf: |
+    #   TYPE        DATABASE      USER    ADDRESS       METHOD
+        local       all           all                   trust
+        hostssl     all           all     all           trust
+        hostnossl   all           all     all           md5
+  postgresql.conf: |
+    data_directory = '/var/lib/postgresql/data/pgdata'
+    hba_file = '/var/lib/postgresql/data/pg_hba.conf'
+
+    listen_addresses = '*'
+
+    citus.enable_statistics_collection='off'
+
+    pg_partman_bgw.dbname='postgres'
+    pg_partman_bgw.interval=86400
+    pg_partman_bgw.role='postgres'
+    pg_partman_bgw.analyze='off'
+    pg_partman_bgw.jobmon='off'
+
+    shared_preload_libraries='citus, cstore_fdw, pg_partman_bgw, pg_stat_statements'

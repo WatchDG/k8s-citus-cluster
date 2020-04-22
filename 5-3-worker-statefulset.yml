@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: worker
+  namespace: archive
+spec:
+  selector:
+    matchLabels:
+      app: worker
+  serviceName: worker
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      volumes:
+        - name: donor-init
+          configMap:
+            name: init
+        - name: donor-config
+          configMap:
+            name: master
+        - name: init
+          emptyDir: {}
+        - name: config
+          emptyDir: {}
+      initContainers:
+        - name: init
+          image: alpine
+          volumeMounts:
+            - name: donor-init
+              mountPath: /from/init
+            - name: donor-config
+              mountPath: /from/config
+            - name: init
+              mountPath: /to/init
+            - name: config
+              mountPath: /to/config
+          command:
+            - sh
+            - -c
+            - cp -r /from/init/. /to/init ; cp -r /from/config/. /to/config
+      containers:
+        - name: worker
+          image: watchdg/citus:9
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: init
+              mountPath: /docker-entrypoint-initdb.d
+            - name: config
+              mountPath: /var/lib/postgresql/config
+            - name: data
+              mountPath: /var/lib/postgresql/data
+          args:
+            - --config_file=/var/lib/postgresql/config/postgresql.conf
+          ports:
+            - containerPort: 5432
+          env:
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: archive
+                  key: password
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: archive
+                  key: password
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - psql -h master -U postgres -c "select * from master_add_node('${HOSTNAME}.worker', 5432);"
+          livenessProbe:
+            exec:
+              command:
+                - ./pg_healthcheck
+            initialDelaySeconds: 60
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        namespace: archive
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
