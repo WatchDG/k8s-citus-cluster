@@ -4,7 +4,8 @@
 
 1) change password
 2) change namespace
-3) change storage value
+3) change replicas
+4) change storage value
 
 ## cstore
 
