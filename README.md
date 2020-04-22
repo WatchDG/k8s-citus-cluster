@@ -1,6 +1,6 @@
 # k8s-citus
 
-## 
+## TODO
 
 1) change password
 2) change namespace
