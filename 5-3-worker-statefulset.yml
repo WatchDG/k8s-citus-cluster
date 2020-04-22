@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: worker
-  namespace: archive
+  namespace: citus-cluster
 spec:
   selector:
     matchLabels:
@@ -62,12 +62,12 @@ spec:
             - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: archive
+                  name: citus-cluster
                   key: password
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: archive
+                  name: citus-cluster
                   key: password
           lifecycle:
             postStart:
@@ -84,7 +84,7 @@ spec:
   volumeClaimTemplates:
     - metadata:
         name: data
-        namespace: archive
+        namespace: citus-cluster
       spec:
         accessModes:
           - ReadWriteOnce

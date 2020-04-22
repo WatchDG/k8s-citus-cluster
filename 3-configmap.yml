@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: init
-  namespace: archive
+  namespace: citus-cluster
 data:
   001-create-citus-extension.sql: |
     BEGIN;
