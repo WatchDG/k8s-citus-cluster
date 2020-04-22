@@ -1,5 +1,11 @@
 # k8s-citus
 
+## 
+
+1) change password
+2) change namespace
+3) change storage value
+
 ## cstore
 
 ```sql
