@@ -4,7 +4,7 @@
 
 1) change password
 2) change namespace
-3) change replicas
+3) change replicas for worker
 4) change storage value
 
 ## cstore
