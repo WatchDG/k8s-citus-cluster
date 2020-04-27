@@ -18,3 +18,11 @@ data:
     CREATE SCHEMA partman;
     CREATE EXTENSION pg_partman SCHEMA partman;
     COMMIT;
+  004-create-hll-extension.sql: |
+    BEGIN;
+    CREATE EXTENSION hll
+    COMMIT;
+  005-create-topn-extension.sql: |
+    BEGIN;
+    CREATE EXTENSION topn;
+    COMMIT;
