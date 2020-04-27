@@ -4,25 +4,29 @@ metadata:
   name: init
   namespace: citus-cluster
 data:
-  001-create-citus-extension.sql: |
+  001-create-cron-extension.sql: |
+    BEGIN;
+    CREATE EXTENSION pg_cron;
+    COMMIT;
+  002-create-citus-extension.sql: |
     BEGIN;
     CREATE EXTENSION citus;
     UPDATE pg_dist_node_metadata SET metadata=jsonb_insert(metadata, '{docker}', 'true');
     COMMIT;
-  002-create-cstore-extension.sql: |
+  003-create-cstore-extension.sql: |
     BEGIN;
     CREATE EXTENSION cstore_fdw;
     COMMIT;
-  003-create-partman-extension.sql: |
+  004-create-partman-extension.sql: |
     BEGIN;
     CREATE SCHEMA partman;
     CREATE EXTENSION pg_partman SCHEMA partman;
     COMMIT;
-  004-create-hll-extension.sql: |
+  005-create-hll-extension.sql: |
     BEGIN;
     CREATE EXTENSION hll;
     COMMIT;
-  005-create-topn-extension.sql: |
+  006-create-topn-extension.sql: |
     BEGIN;
     CREATE EXTENSION topn;
     COMMIT;

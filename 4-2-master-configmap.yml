@@ -14,6 +14,8 @@ data:
 
     listen_addresses = '*'
 
+    cron.database_name = 'postgres'
+
     citus.enable_statistics_collection='off'
 
     pg_partman_bgw.dbname='postgres'
@@ -22,4 +24,4 @@ data:
     pg_partman_bgw.analyze='off'
     pg_partman_bgw.jobmon='off'
 
-    shared_preload_libraries='citus, cstore_fdw, pg_partman_bgw, pg_stat_statements'
+    shared_preload_libraries='pg_cron, citus, cstore_fdw, pg_partman_bgw, pg_stat_statements'
