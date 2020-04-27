@@ -20,7 +20,7 @@ data:
     COMMIT;
   004-create-hll-extension.sql: |
     BEGIN;
-    CREATE EXTENSION hll
+    CREATE EXTENSION hll;
     COMMIT;
   005-create-topn-extension.sql: |
     BEGIN;
