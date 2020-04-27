@@ -1,4 +1,4 @@
-# k8s-citus
+# k8s-citus-cluster
 
 ## TODO
 
