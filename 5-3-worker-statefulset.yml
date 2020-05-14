@@ -73,9 +73,12 @@ spec:
             postStart:
               exec:
                 command:
-                  - /bin/sh
+                  - sh
                   - -c
-                  - psql -h master -U postgres -c "select * from master_add_node('${HOSTNAME}.worker', 5432);"
+                  - |
+                    sleep 30 &&
+                    psql -U postgres -c "alter extension citus update;" &&
+                    psql -h master -U postgres -c "select * from master_add_node('${HOSTNAME}.worker', 5432);"
           livenessProbe:
             exec:
               command:
