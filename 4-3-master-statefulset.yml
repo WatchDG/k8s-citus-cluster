@@ -81,7 +81,7 @@ spec:
                   - -c
                   - |
                     sleep 30 &&
-                    psql -U postgres -c "alter extension citus update;"
+                    psql -U postgres -c "alter extension citus update;" ; echo "end"
   volumeClaimTemplates:
     - metadata:
         name: data

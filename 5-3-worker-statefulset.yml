@@ -77,7 +77,7 @@ spec:
                   - -c
                   - |
                     sleep 30 &&
-                    psql -U postgres -c "alter extension citus update;" &&
+                    psql -U postgres -c "alter extension citus update;" ; echo "middle" &&
                     psql -h master -U postgres -c "select * from master_add_node('${HOSTNAME}.worker', 5432);"
           livenessProbe:
             exec:
